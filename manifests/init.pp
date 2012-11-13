@@ -22,6 +22,7 @@
 class horizon(
   $secret_key,
   $bind_address          = '127.0.0.1',
+  $package_ensure        = 'present',
   $cache_server_ip       = '127.0.0.1',
   $cache_server_port     = '11211',
   $swift                 = false,
@@ -47,7 +48,7 @@ class horizon(
   }
 
   package { $::horizon::params::package_name:
-    ensure  => present,
+    ensure  => $package_ensure,
     require => Package[$::horizon::params::http_service],
   }
 
