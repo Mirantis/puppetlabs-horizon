@@ -42,8 +42,8 @@ class horizon(
   if($::osfamily == 'Debian') {
     package { 'node-less': }
   }
-
-  if $cache_server_ip =~ /^127\.0\.0\.1/ {
+  
+  if defined(Class['memcached']) {
     Class['memcached'] -> Class['horizon']
   }
 
