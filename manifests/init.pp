@@ -21,6 +21,7 @@
 #
 class horizon(
   $secret_key,
+  $bind_address          = '127.0.0.1',
   $cache_server_ip       = '127.0.0.1',
   $cache_server_port     = '11211',
   $swift                 = false,
@@ -55,6 +56,14 @@ class horizon(
     mode    => '0644',
     notify  => Service[$::horizon::params::http_service],
     require => Package[$::horizon::params::package_name],
+  }
+
+  file_line { 'httpd_listen_on_bind_address':
+     path => $::horizon::params::httpd_listen_config_file,
+     match => '^Listen (.*)$',
+     line => "Listen ${bind_address}:80",
+     require => Package["$::horizon::params::package_name"],
+     notify => Service["$::horizon::params::http_service"],
   }
 
   file_line { 'horizon root':
