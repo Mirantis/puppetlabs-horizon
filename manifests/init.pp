@@ -52,6 +52,12 @@ class horizon(
     require => Package[$::horizon::params::http_service],
   }
 
+  File {
+    require => Package[$::horizon::params::package_name],
+    owner => 'apache',
+    group => 'apache',
+  }
+
   file { $::horizon::params::config_file:
     content => template('horizon/local_settings.py.erb'),
     mode    => '0644',
