@@ -62,7 +62,12 @@ class horizon(
     content => template('horizon/local_settings.py.erb'),
     mode    => '0644',
     notify  => Service[$::horizon::params::http_service],
-    require => Package[$::horizon::params::package_name],
+  }
+ 
+  file { $::horizon::params::logdir:
+    ensure => directory,
+    mode => '0751',
+    before => Service[$::horizon::params::http_service],
   }
 
   file_line { 'httpd_listen_on_bind_address':
