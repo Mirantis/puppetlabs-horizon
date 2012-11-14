@@ -38,6 +38,7 @@ class horizon(
 
   include horizon::params
   include apache
+  include apache::mod::wsgi
 
   # I am totally confused by this, I do not think it should be installed...
   if($::osfamily == 'Debian') {
@@ -88,7 +89,7 @@ class horizon(
        notify => Service["$::horizon::params::http_service"]
      }
    }
- 
+
   file_line { 'horizon root':
     path => $::horizon::params::httpd_config_file,
     line => "WSGIScriptAlias ${::horizon::params::root_url} /usr/share/openstack-dashboard/openstack_dashboard/wsgi/django.wsgi",
